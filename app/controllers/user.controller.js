@@ -1,14 +1,24 @@
-var User = require('../models/user.model');
-var model = new User();
+var config = require('../../dbConfig');
+const sql = require('mssql');
 
-exports.getUsers = async function(req, res) {
-    model.getUsers(function(err, data) {
-        res.send({
-            result: data, error: err
-        });
-    });
+async function getUsers(req, res) {
+    try {
+        let pool = await sql.connect(config);
+        let users = await pool.request().query('SELECT * FROM [User]');
+
+        // if(users.recordset.length > 0) {
+        //     result(null, data.recordset)
+        // } else{
+        //     result(true, null)
+        // }
+
+         res.send({ result: users.recordset});
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
-exports.getUserById = async function(req, res) {
-
+module.exports = {
+    getUsers: getUsers
 }
