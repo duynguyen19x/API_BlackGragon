@@ -1,33 +1,21 @@
-// var User = require('./app/models/user.mode');
-// const userController = require('./app/controllers/user.controller');
-
 var express = require('express');
-// var bodyParser = require('body-parser');
-// var cors = require('cors');
 var app = express();
-// var router = express.Router();
-var userRouter = require('./app/routes/user.route');
 
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-// app.use(cors());
-// app.use('/api', router)
+var bodyParser = require('body-parser');
+const cors = require('cors');
+const corsOptions ={
+    origin: 'http://192.168.0.101:3000', 
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 
-// router.use((req, res, next) => {
-//     console.log('middleware');
-//     next();
-// });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-userRouter(app);
-
-// router.route('/users').get((req, res) => {
-//     userController.getUsers().then(result => {
-//         // console.log(result);
-//         res.json(result[0]);
-//     });
-// });
+const route = require('./app/routes/index.rowte');
+route(app);
 
 var port = process.env.PORT || 8090;
 app.listen(port);
 console.log('Server is running at ' + port);
-
