@@ -6,7 +6,12 @@ async function getAlls(req, res) {
         let pool = await sql.connect(config);
         let users = await pool.request().query('SELECT * FROM [User]');
 
-        res.send({ result: users.recordset });
+        res.send({ 
+            result: {
+                users: users.recordset,
+                total: 0
+            }
+        });
     }
     catch (error) {
         console.log(error);
